@@ -1,0 +1,32 @@
+﻿@page "/fetchdata"
+@using BlogOnline.Services;
+@using BlogOnline.ViewModel;
+@inject IBlogService BlogApiClient
+
+
+<h1>Category</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (_blogs == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul class="navbar-nav" style="margin: 0 auto">
+        @foreach (var cat in _blogs)
+        {
+            <li class="nav-item"><a class="nav-link" href="/categories/@cat.Id">Category name: @cat.Description</a></li>
+        }
+    </ul>
+}
+
+@code {
+    private IList<BlogVM> _blogs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _blogs = await BlogApiClient.GetBlogs();
+    }
+}
